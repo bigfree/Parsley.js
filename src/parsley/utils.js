@@ -103,6 +103,14 @@ var ParsleyUtils = {
   },
 
   parse: {
+    date: function(string) {
+      let [year, month, day] = string.split('/')
+        .map(x => parseInt(x, 10));
+      let date = new Date(string);
+      if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day)
+        return null;
+      return date;
+    },
     string: function(string) {
       return string;
     },
