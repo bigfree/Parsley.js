@@ -58,6 +58,13 @@ ParsleyValidator.prototype = {
         throw 'Validator `' + this.name + '` does not handle multiple values';
       return this.validateMultiple(...arguments);
     } else {
+      let [..._, instance] = arguments;
+      if (this.validateDate) && (instance._isDateInput()) {
+        arguments[0] = ParsleyUtils.parseDate(arguments[0]);
+        if (!arguments[0])
+          return false;
+        return this.validateDate(...arguments);
+      }
       if (this.validateNumber) {
         if (isNaN(value))
           return false;

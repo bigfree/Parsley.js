@@ -73,6 +73,19 @@ var decimalPlaces = num => {
        (match[2] ? +match[2] : 0));
 };
 
+let parseArguments = type, arguments => arguments.map(r => ParsleyUtils.parse.date(r))
+    return operator(value, parsed...);
+  }
+let comparisonOperator = operator => ({
+  validateDate: ,
+  validateNumber: value, requirements... => {
+    parsed = requirements.map(r => ParsleyUtils.parse.number(r))
+    return operator(value, parsed...);
+  },
+  requirementType: 'string',
+  priority: 30
+});
+
 ParsleyValidatorRegistry.prototype = {
   init: function (validators, catalog) {
     this.catalog = catalog;
@@ -310,27 +323,9 @@ ParsleyValidatorRegistry.prototype = {
       requirementType: ['integer', 'integer'],
       priority: 30
     },
-    min: {
-      validateNumber: function (value, requirement) {
-        return value >= requirement;
-      },
-      requirementType: 'number',
-      priority: 30
-    },
-    max: {
-      validateNumber: function (value, requirement) {
-        return value <= requirement;
-      },
-      requirementType: 'number',
-      priority: 30
-    },
-    range: {
-      validateNumber: function (value, min, max) {
-        return value >= min && value <= max;
-      },
-      requirementType: ['number', 'number'],
-      priority: 30
-    },
+    min: comparisonOperator((value, requirement) => value >= requirement),
+    max: comparisonOperator((value, requirement) => value <= requirement),
+    range: comparisonOperator((value, min, max) => value >= min && value <= max),
     equalto: {
       validateString: function (value, refOrValue) {
         var $reference = $(refOrValue);
